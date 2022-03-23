@@ -6,8 +6,7 @@ const Constraint = Matter.Constraint;
 var engine, world;
 var backgroundImg;
 var hour;
-
-var bg = "sunrise.png";
+var backgroundImg = "sunrise.png";
 
 function preload() {
     getBackgroundImg();
@@ -28,14 +27,17 @@ function draw(){
     Engine.update(engine);
 
     fill("black");
-    textSize(30);
-    
+    textSize(20);
+    console.log("outSide"+hour)
     if(hour>=12){
         text("Time : "+ hour%12 + " PM", 50,100);
+        console.log("pm"+hour)
     }else if(hour==0){
         text("Time : 12 AM",100,100);
+        console.log("pm"+hour)
     }else{
         text("Time : "+ hour%12 + " AM", 50,100);
+        console.log("am"+hour)
     }
 
 }
@@ -43,26 +45,26 @@ function draw(){
 async function getBackgroundImg(){
 
     // write code to fetch time from API
+  
+        var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata");
+        var  responseJSON = await response.json();
     
+        //console.log (responseJSON);
+        var datetime=responseJSON.datetime;
+        var hour = datetime.slice(11,13);
+
+        if(hour>=6 && hour<19 ){
+            background1 = "sunrise.png";
+        }
+        else{
+            background1="sunset.png"
+        }
+    
+
+
+        backgroundImg = loadImage(background1);
+        console.log(backgroundImg);
+console.log(datetime)
+   
  
-    //change the data in JSON format and store it in variable responseJSON
-    
-
-    
-    //fetch datetime from responseJSON
-    
-    
-
-    // slice the datetime to extract hour
-    
-
-    
-    if(hour>=0 && hour<18 ){
-        bg = "sunrise.png";
-    }
-    else{
-        bg="sunset.png"
-    }
-    
-    backgroundImg = loadImage(bg);
 }
